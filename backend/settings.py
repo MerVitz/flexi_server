@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -22,13 +22,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'c9e77e8b0368a66573b64f18c1634df565fa97ba170bfb57a0e65904667e901c'
+# Secret Key
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')  # Use environment variable, with a fallback for local development
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Debug Mode
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'  # Defaults to False in production
 
-ALLOWED_HOSTS = []
+# Allowed Hosts
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')  # Read from environment, separated by commas
 
 
 # Application definition
@@ -158,13 +159,14 @@ SIMPLE_JWT = {
 }
 
 #Payment Processes SetUp
-#Stripe set-up
-STRIPE_PUBLIC_KEY = "pk_test_51Qexs8P0fh2va7MqS71RwV3Qoo9r3XCiSWk2wpxdFkHg04xnRvHbZhb5YIaSxXav9zRC1y9oYEG5AfkW0nkhX2qI00rTtSt9rH" #The publishable key
-STRIPE_SECRET_KEY = "sk_test_51Qexs8P0fh2va7MqcIK3hpoNkHyFf105H7kbvYO8jyGIt9hx5MRnM39IRvllwZnINWqVJ93LxSP0B4wpUNLoLkI800OLsk5RLp" #Secret Key
+# Stripe Setup
+# STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+# STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 
-#MpesaPayment Process
-MPESA_CONSUMER_KEY = "qhs37bO8inwuv3PLqhBbwqT3ntGcodVDcXYcAjZLmbwH0aCG"
-MPESA_CONSUMER_SECRET = "QJjYdLAv5W5D2fwZJv6nfruFgc4TqLJIPNhAUSAnZpl0e4aQluSOwopHY2XVxRK2"
-MPESA_SHORTCODE = "174379"
-MPESA_PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
-CALLBACK_URL = "https://yourdomain.com/api/mpesa-callback/"
+# Mpesa Setup
+MPESA_CONSUMER_KEY = os.getenv('MPESA_CONSUMER_KEY', '')
+MPESA_CONSUMER_SECRET = os.getenv('MPESA_CONSUMER_SECRET', '')
+MPESA_SHORTCODE = os.getenv('MPESA_SHORTCODE', '')
+MPESA_PASSKEY = os.getenv('MPESA_PASSKEY', '')
+CALLBACK_URL = os.getenv('CALLBACK_URL', '')
+
